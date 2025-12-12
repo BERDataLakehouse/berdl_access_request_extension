@@ -50,7 +50,3 @@ jupyter lab
 - JupyterLab 4.x
 - `berdl_notebook_utils` package (for governance functions)
 - `tenant_access_request_service` (for Slack notifications)
-
-## License
-
-BSD 3-Clause License
