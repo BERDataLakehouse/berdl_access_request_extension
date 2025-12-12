@@ -132,7 +132,7 @@ export function AccessRequestModal({ onClose }: AccessRequestModalProps): React.
               
               <div className="berdl-form-row">
                 <div className="berdl-form-group berdl-form-group-half">
-                  <label>Available Groups</label>
+                  <label>Available Tenants</label>
                   <select
                     className="berdl-select"
                     value={state.selectedGroup}
@@ -150,7 +150,7 @@ export function AccessRequestModal({ onClose }: AccessRequestModalProps): React.
                 </div>
                 
                 <div className="berdl-form-group berdl-form-group-half">
-                  <label>My Groups</label>
+                  <label>My Tenants</label>
                   <div className="berdl-groups-list">
                     {state.myGroups.length === 0 ? (
                       <span className="berdl-muted">No group memberships</span>
