@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "berdl-access-request"
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.13"
 classifiers = [
     "Framework :: Jupyter",
     "Framework :: Jupyter :: JupyterLab",
@@ -14,9 +14,7 @@ classifiers = [
     "Framework :: Jupyter :: JupyterLab :: Extensions :: Prebuilt",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.13",
 ]
 dependencies = [
     "jupyter_server>=2.0.0",
