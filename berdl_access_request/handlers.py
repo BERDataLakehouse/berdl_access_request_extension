@@ -112,10 +112,10 @@ class SubmitRequestHandler(BaseHandler):
 
             self.write_json(
                 {
-                    "status": result["status"],
-                    "message": result["message"],
-                    "tenant_name": result["tenant_name"],
-                    "permission": result["permission"],
+                    "status": result.get("status", "unknown"),
+                    "message": result.get("message", ""),
+                    "tenant_name": result.get("tenant_name", ""),
+                    "permission": result.get("permission", ""),
                 }
             )
 
