@@ -1,0 +1,20 @@
+node_modules/
+lib/
+*.egg-info/
+dist/
+build/
+*.pyc
+__pycache__/
+.ipynb_checkpoints/
+*.tsbuildinfo
+berdl_access_request/labextension/
+.DS_Store
+
+# Yarn artifacts
+.yarn/
+.pnp.cjs
+.pnp.loader.mjs
+yarn.lock
+
+# Generated version file
+berdl_access_request/_version.py
