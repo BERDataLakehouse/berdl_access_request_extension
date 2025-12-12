@@ -27,7 +27,13 @@ class BaseHandler(APIHandler):
 
     def get_json_body(self) -> dict[str, Any]:
         """Parse JSON body from request."""
-        return json.loads(self.request.body.decode("utf-8"))
+        body_str = self.request.body.decode("utf-8")
+        if not body_str.strip():
+            raise ValueError("Request body is empty or missing.")
+        try:
+            return json.loads(body_str)
+        except json.JSONDecodeError:
+            raise ValueError("Malformed JSON in request body.")
 
     def write_json(self, data: dict[str, Any], status: int = 200) -> None:
         """Write JSON response."""
