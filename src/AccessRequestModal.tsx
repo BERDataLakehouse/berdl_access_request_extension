@@ -86,10 +86,16 @@ export function AccessRequestModal({ onClose }: AccessRequestModalProps): React.
         success: result.message,
       }));
     } catch (err) {
+      let errorMessage = 'An unknown error occurred';
+      if (err && typeof err === 'object' && 'message' in err && typeof (err as any).message === 'string') {
+        errorMessage = (err as any).message;
+      } else if (typeof err === 'string') {
+        errorMessage = err;
+      }
       setState(prev => ({
         ...prev,
         submitting: false,
-        error: `Failed to submit request: ${(err as Error).message}`,
+        error: `Failed to submit request: ${errorMessage}`,
       }));
     }
   };
