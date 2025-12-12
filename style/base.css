@@ -267,3 +267,11 @@
   background: transparent;
   box-shadow: none;
 }
+
+/* Fallback for environments that do not support :has().
+   Add the .berdl-access-dialog class to .jp-Dialog-content via JavaScript when it contains .berdl-access-request-widget. */
+.jp-Dialog-content.berdl-access-dialog {
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+}
