@@ -101,7 +101,7 @@ export function AccessRequestModal({ onClose }: AccessRequestModalProps): React.
       <div className="berdl-modal">
         <div className="berdl-modal-header">
           <h2>Request Tenant Access</h2>
-          <button className="berdl-modal-close" onClick={onClose}>×</button>
+          <button className="berdl-modal-close" onClick={onClose} aria-label="Close dialog">×</button>
         </div>
         
         <div className="berdl-modal-content">
