@@ -153,7 +153,7 @@ export function AccessRequestModal({ onClose }: AccessRequestModalProps): React.
                   <label>My Tenants</label>
                   <div className="berdl-groups-list">
                     {state.myGroups.length === 0 ? (
-                      <span className="berdl-muted">No group memberships</span>
+                      <span className="berdl-muted">No tenant memberships</span>
                     ) : (
                       state.myGroups.map(group => (
                         <div key={group} className="berdl-group-item">{group}</div>
