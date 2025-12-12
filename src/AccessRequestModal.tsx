@@ -184,8 +184,9 @@ export function AccessRequestModal({ onClose }: AccessRequestModalProps): React.
               </div>
               
               <div className="berdl-form-group">
-                <label>Justification (optional)</label>
+                <label htmlFor="justification-textarea">Justification (optional)</label>
                 <textarea
+                  id="justification-textarea"
                   className="berdl-textarea"
                   placeholder="Why do you need access to this tenant?"
                   value={state.justification}
