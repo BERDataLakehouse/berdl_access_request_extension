@@ -63,7 +63,11 @@ export function AccessRequestModal({ onClose }: AccessRequestModalProps): React.
     e.preventDefault();
     
     if (!state.selectedGroup) {
-      setState(prev => ({ ...prev, error: 'Please select a group' }));
+      if (state.availableGroups.length === 0) {
+        setState(prev => ({ ...prev, error: 'No groups available to request access to' }));
+      } else {
+        setState(prev => ({ ...prev, error: 'Please select a group' }));
+      }
       return;
     }
 
