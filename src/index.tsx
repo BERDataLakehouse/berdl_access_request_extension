@@ -71,8 +71,8 @@ function addAccessRequestButton(panel: NotebookPanel): void {
     },
   });
 
-  // Insert after the cell type selector (usually around position 10)
-  panel.toolbar.insertItem(10, 'berdl-access-request', button);
+  // Insert at the end of the toolbar for robustness
+  panel.toolbar.addItem('berdl-access-request', button);
 }
 
 /**
