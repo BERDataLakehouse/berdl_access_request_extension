@@ -116,12 +116,21 @@ class SubmitRequestHandler(BaseHandler):
                 justification=justification,
             )
 
+            required_keys = ("status", "message", "tenant_name", "permission")
+            missing_keys = [k for k in required_keys if k not in result]
+            if missing_keys:
+                logger.error(f"request_tenant_access returned missing keys: {missing_keys}")
+                self.write_error_json(
+                    f"Internal error: response missing keys: {', '.join(missing_keys)}", status=502
+                )
+                return
+
             self.write_json(
                 {
-                    "status": result.get("status", "unknown"),
-                    "message": result.get("message", ""),
-                    "tenant_name": result.get("tenant_name", ""),
-                    "permission": result.get("permission", ""),
+                    "status": result["status"],
+                    "message": result["message"],
+                    "tenant_name": result["tenant_name"],
+                    "permission": result["permission"],
                 }
             )
 
