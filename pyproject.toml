@@ -18,7 +18,6 @@ classifiers = [
 ]
 dependencies = [
     "jupyter_server>=2.0.0",
-    "berdl-notebook-utils",
 ]
 dynamic = ["version", "description", "authors", "urls", "keywords"]
 
@@ -58,6 +57,3 @@ build_cmd = "install:extension"
 npm = ["jlpm"]
 source_dir = "src"
 build_dir = "berdl_access_request/labextension"
-
-[tool.uv.sources]
-berdl-notebook-utils = { git = "https://github.com/BERDataLakehouse/spark_notebook.git", subdirectory = "notebook_utils" }
