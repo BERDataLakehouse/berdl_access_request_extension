@@ -55,8 +55,6 @@ async function showAccessRequestModal(): Promise<void> {
       body: widget,
       buttons: [],
       hasClose: false,
-    }).then(() => {
-      resolve();
     });
   });
 }

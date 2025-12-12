@@ -130,7 +130,7 @@ class SubmitRequestHandler(BaseHandler):
             self.write_error_json(str(e), status=500)
 
 
-def setup_handlers(web_app) -> None:
+def setup_handlers(web_app: Any) -> None:
     """Register handlers with the Jupyter server."""
     host_pattern = ".*$"
     base_url = web_app.settings["base_url"]
