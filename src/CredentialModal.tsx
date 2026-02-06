@@ -139,7 +139,7 @@ export function CredentialModal({ onClose }: CredentialModalProps): React.ReactE
               </div>
 
               <div className="berdl-muted" style={{ fontSize: '12px' }}>
-                Save to <code>~/.berdl/remote-config.yaml</code> to use the CLI.
+                Save to <code>~/.berdl/remote-config.yaml</code> to use the berdl-remote CLI.
               </div>
             </>
           ) : null}
