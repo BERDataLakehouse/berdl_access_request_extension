@@ -1,52 +1,70 @@
 # BERDL Access Request Extension
 
-A JupyterLab extension for requesting tenant access in BERDL.
+A JupyterLab extension for requesting tenant access in BERDL and exporting credentials for local development.
 
 ## Features
 
-- **Toolbar Button**: Adds a "Request Tenant Access" button to notebook toolbars
-- **Modal Dialog**: User-friendly interface for selecting tenant groups
-- **Permission Levels**: Choose between read-only or read-write access
-- **Slack Integration**: Requests are sent to a Slack channel for approval
+- **Request Tenant Access**:
+  - Request access to available tenant groups directly from JupyterLab.
+  - Choose permission levels (read-only vs read-write).
+  - Integrated Slack notifications for approval workflows.
+- **Credential Export** (New):
+  - Export your KBase authentication credentials for use with the `berdl-remote` CLI.
+  - Generates a pre-configured `remote-config.yaml` file.
+  - **Local Development Mode**: Automaticaly detects local environments and provides `skip_auth` configuration for testing.
 
 ## Usage
 
-1. Open a notebook in JupyterLab
-2. Click the **"Request Tenant Access"** button in the toolbar
-3. Select a tenant group from the **Available Groups** list
-4. Choose a permission level (Read-Only or Read-Write)
-5. Optionally provide a justification
-6. Click **Submit Request**
+### Request Tenant Access
+1. Open a notebook in JupyterLab.
+2. Click the **"Request Tenant Access"** button (person icon) in the toolbar.
+3. Select a tenant group and permission level.
+4. Click **Submit Request**.
 
-Your request will be sent to the appropriate Slack channel for approval.
+### Get Credentials
+1. Click the **"Get Credentials"** button (key icon) in the toolbar.
+2. Use the modal to:
+   - **Download Config**: Downloads `remote-config.yaml`.
+   - **Copy to Clipboard**: Copies the configuration text.
+3. Save the file to `~/.berdl/remote-config.yaml` on your local machine to use with `berdl-remote`.
 
 ## Installation
 
 ### Docker (spark_notebook)
+The extension is pre-installed in the `spark_notebook` Docker image.
 
-The extension is automatically installed when building the `spark_notebook` Docker image. See the docker-compose.yaml for configuration.
-
-### Development
+### Development Setup
 
 ```bash
-cd berdl_access_request_extension
+# 1. Install dependencies
 jlpm install
+
+# 2. Build the extension
 jlpm build
+python -m build
+
+# 3. Install in development mode
 pip install -e .
 jupyter labextension develop --overwrite .
+
+# 4. Watch for changes (Optional)
+jlpm watch
+# (In another terminal)
 jupyter lab
 ```
 
 ## Architecture
 
-- **Frontend**: TypeScript/React extension that adds toolbar button and modal
-- **Backend**: Python server extension that proxies requests to `berdl_notebook_utils`
+- **Frontend**: TypeScript/React extension adding toolbar buttons and modals.
+- **Backend**: Python server extension proxying requests and handling credential extraction.
 - **API Endpoints**:
-  - `GET /api/access-request/groups` - Fetch available groups and user's groups
-  - `POST /api/access-request/submit` - Submit access request
+  - `GET /api/access-request/groups`: List available/current groups.
+  - `POST /api/access-request/submit`: Submit access request.
+  - `GET /api/access-request/credentials/info`: Check credential status.
+  - `GET /api/access-request/credentials/config`: Download credential YAML.
 
-## Dependencies
+## CI/CD Service
 
-- JupyterLab 4.x
-- `berdl_notebook_utils` package (for governance functions)
-- `tenant_access_request_service` (for Slack notifications)
+The project uses a unified **Release Workflow** (`release.yml`) for both PRs and Stable Releases:
+- **Pull Requests**: Automatically builds a "Preview Release" wheel and comments on the PR with a direct install link.
+- **Main Branch**: Automatically tags version, builds stable wheel, and creates a GitHub Release.

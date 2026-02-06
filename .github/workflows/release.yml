@@ -160,10 +160,20 @@ jobs:
             
             const body = `## 📦 Preview Release Ready
             
-            A preview release has been built and uploaded for this PR.
+            A preview release has been created for this PR.
             
-            ### Installation
-            You can install the pre-built wheel directly:
+            ### Usage in pyproject.toml (e.g. spark_notebook_base)
+            \`\`\`toml
+            berdl-access-request = { git = "https://github.com/${{ github.repository }}.git", rev = "${tagName}" }
+            \`\`\`
+
+            ### Manual Install (Source)
+            \`\`\`bash
+            pip install git+https://github.com/${{ github.repository }}.git@${tagName}
+            \`\`\`
+            *(Note: Requires npm/jlpm installed to build from source)*
+
+            ### Alternative: Pre-built Wheel
             \`\`\`bash
             pip install ${wheelUrl}
             \`\`\`
