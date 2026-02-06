@@ -167,13 +167,20 @@ class CredentialHandler(BaseHandler):
         try:
             # Get hub URL
             # Determine Hub URL
-            protocol = self.request.headers.get("X-Forwarded-Proto", "https")
+            # Handle multi-value headers (e.g. "https,http") by taking the first one
+            protocol = (
+                self.request.headers.get("X-Forwarded-Proto", "https")
+                .split(",")[0]
+                .strip()
+            )
             host = self.request.headers.get("Host", "")
 
             if "JUPYTERHUB_URL" in os.environ:
                 hub_url = os.environ["JUPYTERHUB_URL"]
             elif "JUPYTERHUB_SERVICE_PREFIX" in os.environ:
                 forwarded_host = self.request.headers.get("X-Forwarded-Host", host)
+                if forwarded_host:
+                    forwarded_host = forwarded_host.split(",")[0].strip()
                 hub_url = f"{protocol}://{forwarded_host}"
             else:
                 # Fallback for local development
@@ -259,10 +266,19 @@ class CredentialInfoHandler(BaseHandler):
                 "JUPYTERHUB_USER", os.environ.get("NB_USER", "unknown")
             )
 
-            protocol = self.request.headers.get("X-Forwarded-Proto", "https")
-            host = self.request.headers.get(
-                "X-Forwarded-Host", self.request.headers.get("Host", "")
+            protocol = (
+                self.request.headers.get("X-Forwarded-Proto", "https")
+                .split(",")[0]
+                .strip()
             )
+
+            # Get host, preferring X-Forwarded-Host and handling multi-value headers
+            forwarded_host = self.request.headers.get("X-Forwarded-Host", "")
+            if forwarded_host:
+                host = forwarded_host.split(",")[0].strip()
+            else:
+                host = self.request.headers.get("Host", "")
+
             hub_url = f"{protocol}://{host}"
 
             if "JUPYTERHUB_URL" in os.environ:
