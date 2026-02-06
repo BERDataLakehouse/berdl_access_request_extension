@@ -150,8 +150,6 @@ class SubmitRequestHandler(BaseHandler):
             logger.exception("Error submitting access request")
             self.write_error_json(str(e), status=500)
 
-    logger.info("BERDL Access Request handlers registered")
-
 
 # Credential Handlers (Merged from berdl_credential_extension)
 
@@ -168,13 +166,10 @@ class CredentialHandler(BaseHandler):
         """
         try:
             # Get hub URL
-            hub_url = os.environ.get(
-                "JUPYTERHUB_BASE_URL", self.request.headers.get("X-Forwarded-Host", "")
-            )
+            # Determine Hub URL
             protocol = self.request.headers.get("X-Forwarded-Proto", "https")
             host = self.request.headers.get("Host", "")
 
-            # Try to get the hub URL from the environment first
             if "JUPYTERHUB_URL" in os.environ:
                 hub_url = os.environ["JUPYTERHUB_URL"]
             elif "JUPYTERHUB_SERVICE_PREFIX" in os.environ:
@@ -249,7 +244,7 @@ class CredentialHandler(BaseHandler):
             self.write_error_json(str(e), status=500)
 
 
-class CredentialInfoHandler(APIHandler):
+class CredentialInfoHandler(BaseHandler):
     """Handler for getting credential info."""
 
     @tornado.web.authenticated

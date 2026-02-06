@@ -16,5 +16,7 @@ berdl_access_request/labextension/
 .pnp.loader.mjs
 yarn.lock
 
+.vscode/
+
 # Generated version file
 berdl_access_request/_version.py

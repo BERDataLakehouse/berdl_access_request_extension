@@ -12,6 +12,8 @@ interface CredentialModalProps {
   onClose: () => void;
 }
 
+const CONFIG_FILENAME = 'remote-config.yaml';
+
 export function CredentialModal({ onClose }: CredentialModalProps): React.ReactElement {
   const [info, setInfo] = useState<CredentialInfo | null>(null);
   const [loading, setLoading] = useState(true);
@@ -19,11 +21,7 @@ export function CredentialModal({ onClose }: CredentialModalProps): React.ReactE
   const [copied, setCopied] = useState(false);
   const [downloading, setDownloading] = useState(false);
 
-  useEffect(() => {
-    loadInfo();
-  }, []);
-
-  async function loadInfo() {
+  const loadInfo = React.useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -34,7 +32,11 @@ export function CredentialModal({ onClose }: CredentialModalProps): React.ReactE
     } finally {
       setLoading(false);
     }
-  }
+  }, []);
+
+  useEffect(() => {
+    loadInfo();
+  }, [loadInfo]);
 
   async function handleDownload() {
     setDownloading(true);
@@ -42,10 +44,13 @@ export function CredentialModal({ onClose }: CredentialModalProps): React.ReactE
       const url = getCredentialDownloadUrl();
       const link = document.createElement('a');
       link.href = url;
-      link.download = 'remote-config.yaml';
+      link.download = CONFIG_FILENAME;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+    } catch (err) {
+      console.error(err);
+      setError('Failed to initiate download');
     } finally {
       setDownloading(false);
     }
@@ -58,6 +63,7 @@ export function CredentialModal({ onClose }: CredentialModalProps): React.ReactE
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
+      console.error(err);
       setError('Failed to copy to clipboard');
     }
   }
@@ -75,7 +81,7 @@ export function CredentialModal({ onClose }: CredentialModalProps): React.ReactE
       <div className="berdl-modal" style={{ width: '480px' }}>
         <div className="berdl-modal-header">
           <h2>Get Credentials</h2>
-          <button className="berdl-modal-close" onClick={onClose}>×</button>
+          <button className="berdl-modal-close" onClick={onClose} aria-label="Close">×</button>
         </div>
 
         <div className="berdl-modal-content">
@@ -117,7 +123,7 @@ export function CredentialModal({ onClose }: CredentialModalProps): React.ReactE
                 <button 
                   className="berdl-btn berdl-btn-primary" 
                   onClick={handleDownload}
-                  disabled={!isReady || downloading}
+                  disabled={(!isReady && !info.local_mode) || downloading}
                   style={{ width: '100%', justifyContent: 'center' }}
                 >
                   {downloading ? 'Downloading...' : '⬇️ Download Config File'}
@@ -125,7 +131,7 @@ export function CredentialModal({ onClose }: CredentialModalProps): React.ReactE
                 <button 
                   className="berdl-btn" 
                   onClick={handleCopy}
-                  disabled={!isReady}
+                  disabled={!isReady && !info.local_mode}
                   style={{ width: '100%', justifyContent: 'center' }}
                 >
                   {copied ? '✓ Copied!' : '📋 Copy to Clipboard'}
