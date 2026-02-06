@@ -41,7 +41,12 @@ jobs:
 
           if [ "${{ github.event_name }}" = "push" ] && [ "${{ github.ref }}" = "refs/heads/main" ]; then
             # Main branch push (merge) - create stable release
-            LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
+            # Use --exclude "*-*" to ignore pre-release tags (containing hyphens) when finding the last stable tag
+            LATEST_TAG=$(git describe --tags --abbrev=0 --match "v*" --exclude "*-*" 2>/dev/null || echo "v0.0.0")
+            
+            # If no stable tag found (e.g. only alpha tags exist), default to v0.0.0
+            if [ -z "$LATEST_TAG" ]; then LATEST_TAG="v0.0.0"; fi
+            
             LATEST_VERSION=${LATEST_TAG#v}
             IFS='.' read -r major minor patch <<< "$LATEST_VERSION"
             NEW_PATCH=$((patch + 1))
