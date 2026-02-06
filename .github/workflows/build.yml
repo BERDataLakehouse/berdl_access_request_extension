@@ -35,5 +35,14 @@ jobs:
       - name: Build TypeScript
         run: jlpm build:lib
 
-      - name: Install Python package
-        run: uv pip install --system .
+      - name: Install build
+        run: pip install build
+
+      - name: Build package
+        run: python -m build
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: package-artifacts
+          path: dist/*
