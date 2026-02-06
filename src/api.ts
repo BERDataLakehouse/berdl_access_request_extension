@@ -74,3 +74,56 @@ export async function submitAccessRequest(request: SubmitRequest): Promise<Submi
   
   return response.json();
 }
+
+/**
+ * Credential info response from the server.
+ */
+export interface CredentialInfo {
+  username: string;
+  hub_url: string;
+  cookies_valid: boolean;
+  local_mode?: boolean;
+  missing_cookies: string[];
+}
+
+/**
+ * Get credential info from the server.
+ */
+export async function getCredentialInfo(): Promise<CredentialInfo> {
+  const settings = ServerConnection.makeSettings();
+  const url = URLExt.join(settings.baseUrl, 'api', 'access-request', 'credentials', 'info');
+  
+  const response = await ServerConnection.makeRequest(url, {}, settings);
+  
+  if (!response.ok) {
+    const data = await response.json();
+    throw new Error(data.error || 'Failed to get credential info');
+  }
+  
+  return response.json();
+}
+
+/**
+ * Get the download URL for credentials.
+ */
+export function getCredentialDownloadUrl(): string {
+  const settings = ServerConnection.makeSettings();
+  return URLExt.join(settings.baseUrl, 'api', 'access-request', 'credentials', 'config');
+}
+
+/**
+ * Get credentials as text (for clipboard).
+ */
+export async function getCredentialsAsText(): Promise<string> {
+  const settings = ServerConnection.makeSettings();
+  const url = URLExt.join(settings.baseUrl, 'api', 'access-request', 'credentials', 'config');
+  
+  const response = await ServerConnection.makeRequest(url, {}, settings);
+  
+  if (!response.ok) {
+    const data = await response.json();
+    throw new Error(data.error || 'Failed to get credentials');
+  }
+  
+  return response.text();
+}
