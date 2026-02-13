@@ -7,7 +7,9 @@ This extension provides a toolbar button and modal for tenant access requests.
 try:
     from ._version import __version__
 except ImportError:
-    __version__ = "0.1.0"
+    import warnings
+    warnings.warn("Importing 'berdl_access_request' outside a proper installation.")
+    __version__ = "dev"
 
 from .handlers import setup_handlers
 
