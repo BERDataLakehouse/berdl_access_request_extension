@@ -16,12 +16,14 @@ A JupyterLab extension for requesting tenant access in BERDL and exporting crede
 ## Usage
 
 ### Request Tenant Access
+
 1. Open a notebook in JupyterLab.
 2. Click the **"Request Tenant Access"** button (person icon) in the toolbar.
 3. Select a tenant group and permission level.
 4. Click **Submit Request**.
 
 ### Get Credentials
+
 1. Click the **"Get Credentials"** button (key icon) in the toolbar.
 2. Use the modal to:
    - **Download Config**: Downloads `remote-config.yaml`.
@@ -31,6 +33,7 @@ A JupyterLab extension for requesting tenant access in BERDL and exporting crede
 ## Installation
 
 ### Docker (spark_notebook)
+
 The extension is pre-installed in the `spark_notebook` Docker image.
 
 ### Development Setup
@@ -66,5 +69,6 @@ jupyter lab
 ## CI/CD Service
 
 The project uses a unified **Release Workflow** (`release.yml`) for both PRs and Stable Releases:
+
 - **Pull Requests**: Automatically builds a "Preview Release" wheel and comments on the PR with a direct install link.
 - **Main Branch**: Automatically tags version, builds stable wheel, and creates a GitHub Release.
