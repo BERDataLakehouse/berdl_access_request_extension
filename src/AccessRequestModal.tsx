@@ -24,7 +24,9 @@ interface ModalState {
 /**
  * Modal component for requesting tenant access.
  */
-export function AccessRequestModal({ onClose }: AccessRequestModalProps): React.ReactElement {
+export function AccessRequestModal({
+  onClose
+}: AccessRequestModalProps): React.ReactElement {
   const [state, setState] = React.useState<ModalState>({
     loading: true,
     submitting: false,
@@ -34,7 +36,7 @@ export function AccessRequestModal({ onClose }: AccessRequestModalProps): React.
     myGroups: [],
     selectedGroup: '',
     permission: 'read_only',
-    justification: '',
+    justification: ''
   });
 
   // Fetch groups on mount
@@ -47,24 +49,27 @@ export function AccessRequestModal({ onClose }: AccessRequestModalProps): React.
           loading: false,
           availableGroups: data.available_groups,
           myGroups: data.my_groups,
-          selectedGroup: data.available_groups[0] || '',
+          selectedGroup: data.available_groups[0] || ''
         }));
       })
       .catch((err: Error) => {
         setState(prev => ({
           ...prev,
           loading: false,
-          error: `Failed to load groups: ${err.message}`,
+          error: `Failed to load groups: ${err.message}`
         }));
       });
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!state.selectedGroup) {
       if (state.availableGroups.length === 0) {
-        setState(prev => ({ ...prev, error: 'No groups available to request access to' }));
+        setState(prev => ({
+          ...prev,
+          error: 'No groups available to request access to'
+        }));
       } else {
         setState(prev => ({ ...prev, error: 'Please select a group' }));
       }
@@ -77,17 +82,22 @@ export function AccessRequestModal({ onClose }: AccessRequestModalProps): React.
       const result = await submitAccessRequest({
         tenant_name: state.selectedGroup,
         permission: state.permission,
-        justification: state.justification || undefined,
+        justification: state.justification || undefined
       });
-      
+
       setState(prev => ({
         ...prev,
         submitting: false,
-        success: result.message,
+        success: result.message
       }));
     } catch (err) {
       let errorMessage = 'An unknown error occurred';
-      if (err && typeof err === 'object' && 'message' in err && typeof (err as any).message === 'string') {
+      if (
+        err &&
+        typeof err === 'object' &&
+        'message' in err &&
+        typeof (err as any).message === 'string'
+      ) {
         errorMessage = (err as any).message;
       } else if (typeof err === 'string') {
         errorMessage = err;
@@ -95,7 +105,7 @@ export function AccessRequestModal({ onClose }: AccessRequestModalProps): React.
       setState(prev => ({
         ...prev,
         submitting: false,
-        error: `Failed to submit request: ${errorMessage}`,
+        error: `Failed to submit request: ${errorMessage}`
       }));
     }
   };
@@ -111,9 +121,15 @@ export function AccessRequestModal({ onClose }: AccessRequestModalProps): React.
       <div className="berdl-modal">
         <div className="berdl-modal-header">
           <h2>Request Tenant Access</h2>
-          <button className="berdl-modal-close" onClick={onClose} aria-label="Close dialog">×</button>
+          <button
+            className="berdl-modal-close"
+            onClick={onClose}
+            aria-label="Close dialog"
+          >
+            ×
+          </button>
         </div>
-        
+
         <div className="berdl-modal-content">
           {state.loading ? (
             <div className="berdl-loading">Loading groups...</div>
@@ -126,29 +142,34 @@ export function AccessRequestModal({ onClose }: AccessRequestModalProps): React.
             </div>
           ) : (
             <form onSubmit={handleSubmit}>
-              {state.error && (
-                <div className="berdl-error">{state.error}</div>
-              )}
-              
+              {state.error && <div className="berdl-error">{state.error}</div>}
+
               <div className="berdl-form-row">
                 <div className="berdl-form-group berdl-form-group-half">
                   <label>Available Tenants</label>
                   <select
                     className="berdl-select"
                     value={state.selectedGroup}
-                    onChange={e => setState(prev => ({ ...prev, selectedGroup: e.target.value }))}
+                    onChange={e =>
+                      setState(prev => ({
+                        ...prev,
+                        selectedGroup: e.target.value
+                      }))
+                    }
                     size={6}
                   >
                     {state.availableGroups.length === 0 ? (
                       <option disabled>No groups available</option>
                     ) : (
                       state.availableGroups.map(group => (
-                        <option key={group} value={group}>{group}</option>
+                        <option key={group} value={group}>
+                          {group}
+                        </option>
                       ))
                     )}
                   </select>
                 </div>
-                
+
                 <div className="berdl-form-group berdl-form-group-half">
                   <label>My Tenants</label>
                   <div className="berdl-groups-list">
@@ -156,13 +177,15 @@ export function AccessRequestModal({ onClose }: AccessRequestModalProps): React.
                       <span className="berdl-muted">No tenant memberships</span>
                     ) : (
                       state.myGroups.map(group => (
-                        <div key={group} className="berdl-group-item">{group}</div>
+                        <div key={group} className="berdl-group-item">
+                          {group}
+                        </div>
                       ))
                     )}
                   </div>
                 </div>
               </div>
-              
+
               <div className="berdl-form-group">
                 <label>Permission Level</label>
                 <div className="berdl-radio-group">
@@ -172,7 +195,9 @@ export function AccessRequestModal({ onClose }: AccessRequestModalProps): React.
                       name="permission"
                       value="read_only"
                       checked={state.permission === 'read_only'}
-                      onChange={() => setState(prev => ({ ...prev, permission: 'read_only' }))}
+                      onChange={() =>
+                        setState(prev => ({ ...prev, permission: 'read_only' }))
+                      }
                     />
                     <span>Read-Only</span>
                   </label>
@@ -182,25 +207,37 @@ export function AccessRequestModal({ onClose }: AccessRequestModalProps): React.
                       name="permission"
                       value="read_write"
                       checked={state.permission === 'read_write'}
-                      onChange={() => setState(prev => ({ ...prev, permission: 'read_write' }))}
+                      onChange={() =>
+                        setState(prev => ({
+                          ...prev,
+                          permission: 'read_write'
+                        }))
+                      }
                     />
                     <span>Read-Write</span>
                   </label>
                 </div>
               </div>
-              
+
               <div className="berdl-form-group">
-                <label htmlFor="justification-textarea">Justification (optional)</label>
+                <label htmlFor="justification-textarea">
+                  Justification (optional)
+                </label>
                 <textarea
                   id="justification-textarea"
                   className="berdl-textarea"
                   placeholder="Why do you need access to this tenant?"
                   value={state.justification}
-                  onChange={e => setState(prev => ({ ...prev, justification: e.target.value }))}
+                  onChange={e =>
+                    setState(prev => ({
+                      ...prev,
+                      justification: e.target.value
+                    }))
+                  }
                   rows={3}
                 />
               </div>
-              
+
               <div className="berdl-form-actions">
                 <button
                   type="button"

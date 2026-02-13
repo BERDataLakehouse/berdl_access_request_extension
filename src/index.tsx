@@ -1,17 +1,22 @@
 /**
  * BERDL Access Request JupyterLab Extension.
- * 
+ *
  * Adds a toolbar button to notebooks for requesting tenant access.
  */
 
 import {
   JupyterFrontEnd,
-  JupyterFrontEndPlugin,
+  JupyterFrontEndPlugin
 } from '@jupyterlab/application';
 
 import { INotebookTracker, NotebookPanel } from '@jupyterlab/notebook';
 
-import { ToolbarButton, ReactWidget, showDialog, Dialog } from '@jupyterlab/apputils';
+import {
+  ToolbarButton,
+  ReactWidget,
+  showDialog,
+  Dialog
+} from '@jupyterlab/apputils';
 
 import * as React from 'react';
 
@@ -62,18 +67,18 @@ class CredentialWidget extends ReactWidget {
  * Shows the access request modal as a JupyterLab dialog.
  */
 async function showAccessRequestModal(): Promise<void> {
-  return new Promise<void>((resolve) => {
+  return new Promise<void>(resolve => {
     const widget = new AccessRequestWidget(() => {
       // Close the dialog by flushing all dialogs
       Dialog.flush();
       resolve();
     });
-    
+
     showDialog({
       title: '',
       body: widget,
       buttons: [],
-      hasClose: false,
+      hasClose: false
     });
   });
 }
@@ -82,17 +87,17 @@ async function showAccessRequestModal(): Promise<void> {
  * Shows the credential modal as a JupyterLab dialog.
  */
 async function showCredentialModal(): Promise<void> {
-  return new Promise<void>((resolve) => {
+  return new Promise<void>(resolve => {
     const widget = new CredentialWidget(() => {
       Dialog.flush();
       resolve();
     });
-    
+
     showDialog({
       title: '',
       body: widget,
       buttons: [],
-      hasClose: false,
+      hasClose: false
     });
   });
 }
@@ -106,7 +111,7 @@ function addAccessRequestButton(panel: NotebookPanel): void {
     tooltip: 'Request access to a tenant group',
     onClick: () => {
       showAccessRequestModal();
-    },
+    }
   });
 
   // Insert at the end of the toolbar for robustness
@@ -122,7 +127,7 @@ function addCredentialButton(panel: NotebookPanel): void {
     tooltip: 'Get berdl-remote credentials',
     onClick: () => {
       showCredentialModal();
-    },
+    }
   });
 
   // Insert after access request or at end
@@ -146,7 +151,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
       caption: 'Request access to a data tenant group',
       execute: () => {
         showAccessRequestModal();
-      },
+      }
     });
 
     app.commands.addCommand(COMMAND_ID_CRED, {
@@ -154,11 +159,11 @@ const plugin: JupyterFrontEndPlugin<void> = {
       caption: 'Get berdl-remote credentials',
       execute: () => {
         showCredentialModal();
-      },
+      }
     });
 
     // Add button to existing notebook panels
-    notebookTracker.forEach((panel) => {
+    notebookTracker.forEach(panel => {
       addAccessRequestButton(panel);
       addCredentialButton(panel);
     });
@@ -168,7 +173,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
       addAccessRequestButton(panel);
       addCredentialButton(panel);
     });
-  },
+  }
 };
 
 export default plugin;

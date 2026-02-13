@@ -1,0 +1,16 @@
+name: Enforce PR label
+
+# Disabled — not used in other BERDL extension repos.
+# Uncomment the trigger below to enable.
+# on:
+#   pull_request:
+#     types: [labeled, unlabeled, opened, edited, synchronize]
+on: workflow_dispatch
+jobs:
+  enforce-label:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: enforce-triage-label
+        uses: jupyterlab/maintainer-tools/.github/actions/enforce-label@v1
