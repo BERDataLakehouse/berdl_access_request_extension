@@ -1,8 +1,11 @@
 name: Enforce PR label
 
-on:
-  pull_request:
-    types: [labeled, unlabeled, opened, edited, synchronize]
+# Disabled — not used in other BERDL extension repos.
+# Uncomment the trigger below to enable.
+# on:
+#   pull_request:
+#     types: [labeled, unlabeled, opened, edited, synchronize]
+on: workflow_dispatch
 jobs:
   enforce-label:
     runs-on: ubuntu-latest
