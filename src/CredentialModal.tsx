@@ -174,7 +174,14 @@ export function CredentialModal({
 
               <div className="berdl-muted" style={{ fontSize: '12px' }}>
                 Save to <code>~/.berdl/remote-config.yaml</code> to use the{' '}
-                <a href="https://github.com/BERDataLakehouse/berdl_remote" target="_blank" rel="noreferrer">berdl-remote</a> CLI.
+                <a
+                  href="https://github.com/BERDataLakehouse/berdl_remote"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  berdl-remote
+                </a>{' '}
+                CLI.
               </div>
             </>
           ) : null}
