@@ -177,7 +177,7 @@ export function CredentialModal({
                 <a
                   href="https://github.com/BERDataLakehouse/berdl_remote"
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                 >
                   berdl-remote
                 </a>{' '}
