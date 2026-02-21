@@ -1,12 +1,17 @@
 /**
  * Credential Modal Component
- * 
+ *
  * Unified UI for exporting credentials (matches AccessRequestModal style).
  */
 
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { getCredentialInfo, getCredentialDownloadUrl, getCredentialsAsText, CredentialInfo } from './api';
+import {
+  getCredentialInfo,
+  getCredentialDownloadUrl,
+  getCredentialsAsText,
+  CredentialInfo
+} from './api';
 
 interface CredentialModalProps {
   onClose: () => void;
@@ -14,7 +19,9 @@ interface CredentialModalProps {
 
 const CONFIG_FILENAME = 'remote-config.yaml';
 
-export function CredentialModal({ onClose }: CredentialModalProps): React.ReactElement {
+export function CredentialModal({
+  onClose
+}: CredentialModalProps): React.ReactElement {
   const [info, setInfo] = useState<CredentialInfo | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -28,7 +35,9 @@ export function CredentialModal({ onClose }: CredentialModalProps): React.ReactE
       const data = await getCredentialInfo();
       setInfo(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load credentials');
+      setError(
+        err instanceof Error ? err.message : 'Failed to load credentials'
+      );
     } finally {
       setLoading(false);
     }
@@ -81,7 +90,13 @@ export function CredentialModal({ onClose }: CredentialModalProps): React.ReactE
       <div className="berdl-modal" style={{ width: '480px' }}>
         <div className="berdl-modal-header">
           <h2>Get Credentials</h2>
-          <button className="berdl-modal-close" onClick={onClose} aria-label="Close">×</button>
+          <button
+            className="berdl-modal-close"
+            onClick={onClose}
+            aria-label="Close"
+          >
+            ×
+          </button>
         </div>
 
         <div className="berdl-modal-content">
@@ -91,13 +106,18 @@ export function CredentialModal({ onClose }: CredentialModalProps): React.ReactE
             <div className="berdl-error">
               {error}
               <div style={{ marginTop: '10px', textAlign: 'center' }}>
-                <button className="berdl-btn" onClick={loadInfo}>Retry</button>
+                <button className="berdl-btn" onClick={loadInfo}>
+                  Retry
+                </button>
               </div>
             </div>
           ) : info ? (
             <>
               {/* User Info Block */}
-              <div className="berdl-groups-list" style={{ marginBottom: '20px', padding: '15px' }}>
+              <div
+                className="berdl-groups-list"
+                style={{ marginBottom: '20px', padding: '15px' }}
+              >
                 <div style={{ marginBottom: '8px' }}>
                   <strong>Username:</strong> {info.username}
                 </div>
@@ -106,30 +126,44 @@ export function CredentialModal({ onClose }: CredentialModalProps): React.ReactE
                 </div>
                 <div>
                   <strong>Status:</strong>{' '}
-                  <span style={{ color: isReady ? 'var(--jp-success-color0)' : 'var(--jp-error-color0)', fontWeight: 500 }}>
-                    {info.cookies_valid ? '✓ Connected' : (info.local_mode ? '✓ Local Dev Mode' : '✗ Missing Auth')}
+                  <span
+                    style={{
+                      color: isReady
+                        ? 'var(--jp-success-color0)'
+                        : 'var(--jp-error-color0)',
+                      fontWeight: 500
+                    }}
+                  >
+                    {info.cookies_valid
+                      ? '✓ Connected'
+                      : info.local_mode
+                        ? '✓ Local Dev Mode'
+                        : '✗ Missing Auth'}
                   </span>
                 </div>
               </div>
 
               {!isReady && (
-                 <div className="berdl-error">
-                   Missing cookies: {info.missing_cookies.join(', ')}. Please log in again.
-                 </div>
+                <div className="berdl-error">
+                  Missing cookies: {info.missing_cookies.join(', ')}. Please log
+                  in again.
+                </div>
               )}
 
               {/* Actions */}
-              <div style={{ display: 'grid', gap: '10px', marginBottom: '20px' }}>
-                <button 
-                  className="berdl-btn berdl-btn-primary" 
+              <div
+                style={{ display: 'grid', gap: '10px', marginBottom: '20px' }}
+              >
+                <button
+                  className="berdl-btn berdl-btn-primary"
                   onClick={handleDownload}
                   disabled={(!isReady && !info.local_mode) || downloading}
                   style={{ width: '100%', justifyContent: 'center' }}
                 >
                   {downloading ? 'Downloading...' : '⬇️ Download Config File'}
                 </button>
-                <button 
-                  className="berdl-btn" 
+                <button
+                  className="berdl-btn"
                   onClick={handleCopy}
                   disabled={!isReady && !info.local_mode}
                   style={{ width: '100%', justifyContent: 'center' }}

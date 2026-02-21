@@ -7,11 +7,8 @@
 /* Modal backdrop */
 .berdl-modal-backdrop {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  inset: 0;
+  background: rgb(0 0 0 / 50%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -22,7 +19,7 @@
 .berdl-modal {
   background: var(--jp-layout-color1);
   border-radius: 8px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 24px rgb(0 0 0 / 20%);
   width: 560px;
   max-width: 90vw;
   max-height: 80vh;
@@ -81,7 +78,7 @@
 }
 
 .berdl-success p {
-  margin: 0 0 20px 0;
+  margin: 0 0 20px;
   color: var(--jp-success-color0);
   font-weight: 500;
 }
@@ -186,7 +183,7 @@
   color: var(--jp-ui-font-color0);
 }
 
-.berdl-radio input[type="radio"] {
+.berdl-radio input[type='radio'] {
   margin: 0;
 }
 
@@ -236,13 +233,13 @@
   transition: all 0.15s ease;
 }
 
-.berdl-btn:hover:not(:disabled) {
-  background: var(--jp-layout-color2);
-}
-
 .berdl-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.berdl-btn:hover:not(:disabled) {
+  background: var(--jp-layout-color2);
 }
 
 .berdl-btn-primary {
